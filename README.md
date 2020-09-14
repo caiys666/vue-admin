@@ -23,4 +23,4 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-＃20200914实现项目要素ui引入
+＃20200914实现要素ui引入
