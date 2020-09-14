@@ -77,7 +77,6 @@ export default {
       };
       var validatePasswords = (rule, value, callback) => {
         // let reg = /^(?!\D+$)(?![^a-zA-Z]+$)\S{6,20}$/;
-        if(this.model === 'login'){callback()}
         this.ruleForm2.passwords = stripscript(value);
         value = this.ruleForm2.passwords ;
         if (value === '') {
@@ -103,8 +102,8 @@ export default {
       };
         return {
             menuTab:[
-                {txt: '登陆', current :true, type: 'login'},
-                {txt: "注册", current :false, type: 'register'}
+                {txt: '登陆', current :true},
+                {txt: "注册", current :false}
             ],
             model: 'login',
             ruleForm2: {
@@ -134,7 +133,6 @@ export default {
             this.menuTab.forEach(ele =>{
                 ele.current = false
             })
-            this.model = data.type
             data.current = true
         },
         submitForm(formName) {
