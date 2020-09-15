@@ -13,7 +13,7 @@
             <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="login-form">
                 <el-form-item  prop="username" class="item-form">
                     <label>邮箱</label>
-                    <el-input type="text" v-model="ruleForm2.username" auto-complete="off"></el-input>
+                    <el-input type="password" v-model="ruleForm2.username" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item prop="password" class="item-form">
                     <label>密码</label>
@@ -36,7 +36,7 @@
                     <label>验证码</label>
                     <el-row :gutter="15">
                         <el-col :span="15"><el-input v-model.number="ruleForm2.code"></el-input></el-col>
-                        <el-col :span="9"><el-button type="primary" @click="getsms()">获取验证码</el-button></el-col>
+                        <el-col :span="9"><el-button type="primary">获取验证码</el-button></el-col>
                     </el-row>
                     
                 </el-form-item>
@@ -49,7 +49,7 @@
     </div>
 </template>
 <script>
-import { getSms } from '@/api/login.js'
+import service from '@/utils/request.js'
 import { onMounted, reactive, ref } from '@vue/composition-api'
 import { stripscript, validateEmail, validatePwd, validateCode_ } from '@/utils/validate.js'
 export default {
@@ -149,7 +149,23 @@ export default {
             data.current = true
         })
         const submitForm = (formName =>{
-           
+            // 为给定 ID 的 user 创建请求
+            axios.request({
+                method: 'post',
+                url: '/user/12345',
+                data: {
+                    firstName: 'Fred',
+                    lastName: 'Flintstone'
+                }
+            })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+
             context.refs[formName].validate((valid) => {
             if (valid) {
                 alert('submit!');
@@ -159,22 +175,14 @@ export default {
             }
             })
         })
-       /**
-        * 获取验证码
-        */
-       const getsms = (() =>{
-           let data = {
-               username : ruleForm2.username
-           }
-             getSms(data);
-        })
+
 
         /**
          * 生命周期函数
          */
         // 挂载完成后
         onMounted(() => {
-           
+
         })
 
         return{
@@ -183,8 +191,7 @@ export default {
             toggleMenu,
             submitForm,
             ruleForm2,
-            rules2,
-            getsms
+            rules2
         }
 
     }

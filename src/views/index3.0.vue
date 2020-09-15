@@ -13,7 +13,7 @@
             <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="login-form">
                 <el-form-item  prop="username" class="item-form">
                     <label>邮箱</label>
-                    <el-input type="text" v-model="ruleForm2.username" auto-complete="off"></el-input>
+                    <el-input type="password" v-model="ruleForm2.username" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item prop="password" class="item-form">
                     <label>密码</label>
@@ -36,7 +36,7 @@
                     <label>验证码</label>
                     <el-row :gutter="15">
                         <el-col :span="15"><el-input v-model.number="ruleForm2.code"></el-input></el-col>
-                        <el-col :span="9"><el-button type="primary" @click="getsms()">获取验证码</el-button></el-col>
+                        <el-col :span="9"><el-button type="primary">获取验证码</el-button></el-col>
                     </el-row>
                     
                 </el-form-item>
@@ -49,7 +49,6 @@
     </div>
 </template>
 <script>
-import { getSms } from '@/api/login.js'
 import { onMounted, reactive, ref } from '@vue/composition-api'
 import { stripscript, validateEmail, validatePwd, validateCode_ } from '@/utils/validate.js'
 export default {
@@ -107,12 +106,12 @@ export default {
             callback();
         }
       };
-        //放置data数据、生命周期、自定义函数 reactive
+        //放置data数据、生命周期、自定义函数
         const menuTab = reactive([
                 {txt: '登陆', current :true, type: 'login'},
                 {txt: "注册", current :false, type: 'register'}
             ])
-        //模块值 ref
+        //模块值
         const model = ref('login')
         /**
          * 表单数据
@@ -149,32 +148,22 @@ export default {
             data.current = true
         })
         const submitForm = (formName =>{
-           
             context.refs[formName].validate((valid) => {
-            if (valid) {
-                alert('submit!');
-            } else {
-                console.log('error submit!!');
-                return false;
-            }
-            })
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
         })
-       /**
-        * 获取验证码
-        */
-       const getsms = (() =>{
-           let data = {
-               username : ruleForm2.username
-           }
-             getSms(data);
         })
+
 
         /**
          * 生命周期函数
          */
-        // 挂载完成后
         onMounted(() => {
-           
+
         })
 
         return{
@@ -183,8 +172,7 @@ export default {
             toggleMenu,
             submitForm,
             ruleForm2,
-            rules2,
-            getsms
+            rules2
         }
 
     }

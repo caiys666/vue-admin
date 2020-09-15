@@ -13,7 +13,7 @@
             <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="login-form">
                 <el-form-item  prop="username" class="item-form">
                     <label>邮箱</label>
-                    <el-input type="text" v-model="ruleForm2.username" auto-complete="off"></el-input>
+                    <el-input type="password" v-model="ruleForm2.username" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item prop="password" class="item-form">
                     <label>密码</label>
