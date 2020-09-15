@@ -12,13 +12,12 @@
 
             <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="login-form">
                 <el-form-item  prop="username" class="item-form">
-                    <label for="username">邮箱</label>
-                    <el-input id="username" type="text" v-model="ruleForm2.username" auto-complete="off"></el-input>
+                    <label>邮箱</label>
+                    <el-input type="text" v-model="ruleForm2.username" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item prop="password" class="item-form">
-                    <label for="password">密码</label>
+                    <label>密码</label>
                     <el-input 
-                        id="password"
                         type="password" v-model="ruleForm2.password" auto-complete="off"
                         minlength="6" maxlength="20"
                     ></el-input>
@@ -27,17 +26,16 @@
                     prop="passwords" 
                     class="item-form"
                     v-if="model === 'register'">
-                    <label for="password1">重复密码</label>
+                    <label>重复密码</label>
                     <el-input 
-                        id="password1"
                         type="password" v-model="ruleForm2.passwords" auto-complete="off"
                         minlength="6" maxlength="20"
                     ></el-input>
                 </el-form-item>
                 <el-form-item prop="code" class="item-form">
-                    <label for="code">验证码</label>
+                    <label>验证码</label>
                     <el-row :gutter="15">
-                        <el-col :span="15"><el-input id="code" v-model.number="ruleForm2.code"></el-input></el-col>
+                        <el-col :span="15"><el-input v-model.number="ruleForm2.code"></el-input></el-col>
                         <el-col :span="9"><el-button type="primary" @click="getsms()">获取验证码</el-button></el-col>
                     </el-row>
                     
@@ -47,7 +45,7 @@
                         type="danger" 
                         @click="submitForm('ruleForm2')" 
                         class="block"
-                        
+                        v-bind = 'disabled = loginButtonStatus'
                     >{{model === 'login' ? "登陆" : "注册"}}</el-button>
                 </el-form-item>
             </el-form>
@@ -62,7 +60,7 @@ import { stripscript, validateEmail, validatePwd, validateCode_ } from '@/utils/
 export default {
     name: 'login',
     
-    setup(props,{refs,root}){
+    setup(props,context){
       // 正则邮箱
       let validateUsername = (rule, value, callback) => {
         // let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
@@ -159,7 +157,7 @@ export default {
         })
         const submitForm = (formName =>{
            
-            refs[formName].validate((valid) => {
+            context.refs[formName].validate((valid) => {
             if (valid) {
                 alert('submit!');
             } else {
@@ -172,26 +170,11 @@ export default {
         * 获取验证码
         */
        const getsms = (() =>{
-           let data = {
-               username : ruleForm2.username,
-               module: 'login'
-           }
            //进行提示
            if(ruleForm2.username === ''){
-               root.$message.error('邮箱不能为空');
-               return false
+               this.$message.error('错了哦，这是一条错误消息');
            }
-
-        //    if(validateEmail(ruleForm2.username)){
-        //        root.$message.error('邮箱格式有误');
-        //        return false
-        //    }
-
-            getSms(data).then(Response => {
-                console.log(Response)
-            }).cath(error => {
-                console.log(error)
-            });
+             getSms({username : ruleForm2.username});
         })
 
         /**

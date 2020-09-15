@@ -16,9 +16,8 @@
                     <el-input id="username" type="text" v-model="ruleForm2.username" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item prop="password" class="item-form">
-                    <label for="password">密码</label>
+                    <label>密码</label>
                     <el-input 
-                        id="password"
                         type="password" v-model="ruleForm2.password" auto-complete="off"
                         minlength="6" maxlength="20"
                     ></el-input>
@@ -27,17 +26,16 @@
                     prop="passwords" 
                     class="item-form"
                     v-if="model === 'register'">
-                    <label for="password1">重复密码</label>
+                    <label>重复密码</label>
                     <el-input 
-                        id="password1"
                         type="password" v-model="ruleForm2.passwords" auto-complete="off"
                         minlength="6" maxlength="20"
                     ></el-input>
                 </el-form-item>
                 <el-form-item prop="code" class="item-form">
-                    <label for="code">验证码</label>
+                    <label>验证码</label>
                     <el-row :gutter="15">
-                        <el-col :span="15"><el-input id="code" v-model.number="ruleForm2.code"></el-input></el-col>
+                        <el-col :span="15"><el-input v-model.number="ruleForm2.code"></el-input></el-col>
                         <el-col :span="9"><el-button type="primary" @click="getsms()">获取验证码</el-button></el-col>
                     </el-row>
                     
@@ -182,11 +180,10 @@ export default {
                return false
            }
 
-        //    if(validateEmail(ruleForm2.username)){
-        //        root.$message.error('邮箱格式有误');
-        //        return false
-        //    }
-
+           if(validateEmail(ruleForm2.username)){
+               root.$message.error('邮箱格式有误');
+               return false
+           }
             getSms(data).then(Response => {
                 console.log(Response)
             }).cath(error => {
