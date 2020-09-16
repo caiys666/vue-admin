@@ -212,8 +212,7 @@ export default {
          * 更新button状态
          */
         const updataButtonStatus = ((params) => {
-            codeButtonstatus.status = params.status,
-            codeButtonstatus.text = params.text
+
         })
 
         /**
@@ -265,17 +264,17 @@ export default {
                 status: true,
                 text: '验证码已发送'
             })
-            setTimeout(() => {
-                    getSms(requesedata).then(response => {
-                        let data = response.data
-                        codeButtonstatus.text = '发送中'
-                        countDown(5)
-                        root.$message({
-                            message: data.message,
-                            type: 'success'
-                        })
+        setTimeout(() => {
+                getSms(requesedata).then(response => {
+                    let data = response.data
+                    codeButtonstatus.text = '发送中'
+                    countDown(60)
+                    root.$message({
+                        message: data.message,
+                        type: 'success'
                     })
-            },3000)
+                })
+        },3000)
         })
 
         /**
@@ -312,10 +311,8 @@ export default {
         const clearCountDown = (() => {
             //还原验证码默认状态
             
-            updataButtonStatus({
-                status: false,
-                text: '获取验证码'
-            })
+            codeButtonstatus.status = false
+            codeButtonstatus.text = '获取验证码'
             //清除倒计时
             clearInterval(timer.value)
 

@@ -37,11 +37,8 @@
                 <el-form-item prop="code" class="item-form">
                     <label for="code">验证码</label>
                     <el-row :gutter="15">
-                        <el-col :span="15"><el-input id="code" v-model="ruleForm2.code"></el-input></el-col>
-                        <el-col :span="9">
-                            <el-button type="primary" @click="getsms()" :disabled="codeButtonstatus.status">
-                                {{codeButtonstatus.text}}
-                            </el-button></el-col>
+                        <el-col :span="15"><el-input id="code" v-model.number="ruleForm2.code"></el-input></el-col>
+                        <el-col :span="9"><el-button type="primary" @click="getsms()">获取验证码</el-button></el-col>
                     </el-row>
                     
                 </el-form-item>
@@ -59,8 +56,7 @@
     </div>
 </template>
 <script>
-import sha1 from 'sha1'
-import { getSms, Register, Login } from '@/api/login.js'
+import { getSms } from '@/api/login.js'
 import { onMounted, reactive, ref } from '@vue/composition-api'
 import { stripscript, validateEmail, validatePwd, validateCode_ } from '@/utils/validate.js'
 export default {
@@ -124,19 +120,9 @@ export default {
                 {txt: "注册", current :false, type: 'register'}
             ])
         //模块值 ref
-        const model = ref('login');
+        const model = ref('login')
         //登陆按钮禁用状态
-        const loginButtonStatus = ref(true);
-        //验证码禁用状态
-        const codeButtonstatus = reactive(
-            {
-                status: false,
-                text: '发送验证码'
-            }
-        )
-        //倒计时
-        const timer = ref(null)
-        
+        const loginButtonStatus = ref(true)
         /**
          * 表单数据
          */
@@ -166,87 +152,29 @@ export default {
          */
         const toggleMenu = (data =>{
             menuTab.forEach(ele =>{
-                ele.current = false;
+                ele.current = false
             })
-            model.value = data.type;
-            data.current = true;
+            model.value = data.type
+            data.current = true
             //重置表单
             refs.ruleForm2.resetFields();
-            clearCountDown();
         })
-
-        /**
-         * 提交表单
-         */
         const submitForm = (formName =>{
+           
             refs[formName].validate((valid) => {
             if (valid) {
                 alert('submit!');
-
-                //三元运算
-                model.value === 'login' ? login() : register();
             } else {
                 console.log('error submit!!');
                 return false;
             }
             })
-        });
-
-        /**
-         * 登陆
-         */
-        const login = (() => {
-            let Requestdata = {
-                username: ruleForm2.username,
-                password: sha1(ruleForm2.password),
-                code: ruleForm2.code,
-            }
-            Login(Requestdata).then(response => {
-                console.log('登陆')
-            }).catch(error => {
-
-            })
         })
-
-        /**
-         * 更新button状态
-         */
-        const updataButtonStatus = ((params) => {
-            codeButtonstatus.status = params.status,
-            codeButtonstatus.text = params.text
-        })
-
-        /**
-         * 注册
-         */
-        const register = (() => {
-            let Requestdata = {
-                username: ruleForm2.username,
-                password: sha1(ruleForm2.password),
-                code: ruleForm2.code,
-                module: 'register'
-            }
-            //注册接口
-            Register(Requestdata).then(response => {
-                console.log(response)
-                let data = response.data
-                root.$message({
-                    message:data.message,
-                    type: 'success'
-                })
-                toggleMenu(menuTab[0])
-                clearCountDown()
-            }).catch(error => {
-                //失败时执行的代码
-            })
-        })
-
-
        /**
         * 获取验证码
         */
        const getsms = (() =>{
-           let requesedata = {
+           let data = {
                username : ruleForm2.username,
                module: model.value
            }
@@ -261,72 +189,14 @@ export default {
         //        return false
         //    }
 
-            updataButtonStatus({
-                status: true,
-                text: '验证码已发送'
+            getSms(data).then(response => {
+                let data = response.data
+                root.$message({
+                    message: data.message,
+                    type: 'success'
+                })
             })
-            setTimeout(() => {
-                    getSms(requesedata).then(response => {
-                        let data = response.data
-                        codeButtonstatus.text = '发送中'
-                        countDown(5)
-                        root.$message({
-                            message: data.message,
-                            type: 'success'
-                        })
-                    })
-            },3000)
         })
-
-        /**
-         * 倒计时
-         */
-        const countDown = ((number) => {
-            //判断计时器是否存在
-            if(timer.value){
-                clearInterval(timer.value)
-            }
-
-            //setTimeout 只执行一次  clearTimeout()
-            //setInterval 不断执行 需要条件  clearInterval()
-
-            let time = number
-            timer.value = setInterval(() => {
-                time--
-                console.log(time)
-                if(time === 0){
-                    clearInterval(timer.value)
-                    updataButtonStatus({
-                        status: false,
-                        text: '再次获取'
-                    })
-                }else{
-                    codeButtonstatus.text = `倒计时${time}秒`  //es6写法
-                }   
-            },2000)
-        })
-        /**
-         * 清除倒计时
-         */
-
-        const clearCountDown = (() => {
-            //还原验证码默认状态
-            
-            updataButtonStatus({
-                status: false,
-                text: '获取验证码'
-            })
-            //清除倒计时
-            clearInterval(timer.value)
-
-            // const codeButtonstatus = reactive(
-            //     {
-            //         status: false,
-            //         text: '发送验证码'
-            //     }
-            // )
-        })
-
 
         /**
          * 生命周期函数
@@ -344,9 +214,7 @@ export default {
             ruleForm2,
             rules2,
             getsms,
-            loginButtonStatus,
-            codeButtonstatus,
-            timer
+            loginButtonStatus
         }
 
     }

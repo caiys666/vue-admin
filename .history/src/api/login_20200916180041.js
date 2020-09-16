@@ -20,15 +20,6 @@ export function getSms(data){
  * 登陆
  */
 
-export function Login(data){
-    return service.request({
-        method: 'post',
-        url: '/login/',
-        data: data
-        // data: data 左边的data是变量名（key）后台接收的  右边的data是接收的参数 两个同名可以写成一个即可（ES6）
-    })
-}
-
 /**
 * 注册
 */

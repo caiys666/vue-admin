@@ -269,7 +269,7 @@ export default {
                     getSms(requesedata).then(response => {
                         let data = response.data
                         codeButtonstatus.text = '发送中'
-                        countDown(5)
+                        countDown(60)
                         root.$message({
                             message: data.message,
                             type: 'success'

@@ -59,7 +59,6 @@
     </div>
 </template>
 <script>
-import sha1 from 'sha1'
 import { getSms, Register, Login } from '@/api/login.js'
 import { onMounted, reactive, ref } from '@vue/composition-api'
 import { stripscript, validateEmail, validatePwd, validateCode_ } from '@/utils/validate.js'
@@ -166,13 +165,12 @@ export default {
          */
         const toggleMenu = (data =>{
             menuTab.forEach(ele =>{
-                ele.current = false;
+                ele.current = false
             })
-            model.value = data.type;
-            data.current = true;
+            model.value = data.type
+            data.current = true
             //重置表单
             refs.ruleForm2.resetFields();
-            clearCountDown();
         })
 
         /**
@@ -198,7 +196,7 @@ export default {
         const login = (() => {
             let Requestdata = {
                 username: ruleForm2.username,
-                password: sha1(ruleForm2.password),
+                password: ruleForm2.password,
                 code: ruleForm2.code,
             }
             Login(Requestdata).then(response => {
@@ -209,20 +207,12 @@ export default {
         })
 
         /**
-         * 更新button状态
-         */
-        const updataButtonStatus = ((params) => {
-            codeButtonstatus.status = params.status,
-            codeButtonstatus.text = params.text
-        })
-
-        /**
          * 注册
          */
         const register = (() => {
             let Requestdata = {
                 username: ruleForm2.username,
-                password: sha1(ruleForm2.password),
+                password: ruleForm2.password,
                 code: ruleForm2.code,
                 module: 'register'
             }
@@ -261,21 +251,20 @@ export default {
         //        return false
         //    }
 
-            updataButtonStatus({
-                status: true,
-                text: '验证码已发送'
-            })
-            setTimeout(() => {
-                    getSms(requesedata).then(response => {
-                        let data = response.data
-                        codeButtonstatus.text = '发送中'
-                        countDown(5)
-                        root.$message({
-                            message: data.message,
-                            type: 'success'
-                        })
+            codeButtonstatus.status = true;
+            codeButtonstatus.text = '验证码已发送'
+        
+        setTimeout(() => {
+                getSms(requesedata).then(response => {
+                    let data = response.data
+                    codeButtonstatus.text = '发送中'
+                    countDown(60)
+                    root.$message({
+                        message: data.message,
+                        type: 'success'
                     })
-            },3000)
+                })
+        },3000)
         })
 
         /**
@@ -296,10 +285,8 @@ export default {
                 console.log(time)
                 if(time === 0){
                     clearInterval(timer.value)
-                    updataButtonStatus({
-                        status: false,
-                        text: '再次获取'
-                    })
+                    codeButtonstatus.status = false;
+                    codeButtonstatus.text = '再次获取'
                 }else{
                     codeButtonstatus.text = `倒计时${time}秒`  //es6写法
                 }   
@@ -312,10 +299,8 @@ export default {
         const clearCountDown = (() => {
             //还原验证码默认状态
             
-            updataButtonStatus({
-                status: false,
-                text: '获取验证码'
-            })
+            codeButtonstatus.status = false
+            codeButtonstatus.text = '获取验证码'
             //清除倒计时
             clearInterval(timer.value)
 
