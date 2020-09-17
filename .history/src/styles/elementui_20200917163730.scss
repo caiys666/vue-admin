@@ -1,0 +1,7 @@
+.el-submenu .el-menu-item {
+    font-size: 14px;
+    padding: 0 45px 0 50px;
+    &.isactive {
+        background-color: red !important;
+    }
+}

@@ -41,49 +41,29 @@ const routes = [
     ]
   },
   {
-    path: "/info",
-    name: "Info",
+    path: "/console",
+    name: "Console",
+    redirect: "index",
     meta:{
       name:'信息管理'
     },
     component: () => import("../views/Layout/index.vue"),
     children:[
       {
-        path: "/infoIndex",
-        name: "InfoIndex",
+        path: "/index",
+        name: "Index",
         meta:{
           name:'信息列表'
         },
-        component: () => import("../views/Info/index.vue"),
+        component: () => import("../views/Console/index.vue"),
       },
       {
-        path: "/infocategory",
-        name: "InfoCategory",
+        path: "/index",
+        name: "Index",
         meta:{
           name:'信息分类'
         },
-        component: () => import("../views/Info/category.vue"),
-      }
-    ]
-  },
-  /**
-   * 用户管理
-   */
-  {
-    path: "/user",
-    name: "User",
-    meta:{
-      name:'用户管理'
-    },
-    component: () => import("../views/Layout/index.vue"),
-    children:[
-      {
-        path: "/userIndex",
-        name: "UserIndex",
-        meta:{
-          name:'用户列表'
-        },
-        component: () => import("../views/User/index.vue"),
+        component: () => import("../views/Console/index.vue"),
       }
     ]
   }

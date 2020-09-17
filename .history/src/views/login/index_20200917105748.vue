@@ -206,14 +206,10 @@ export default {
                 /**
                  * 路由跳转
                  */
-                root.$router.push({
-                    name: 'Console'
-                });
+                root.$router.push('Console');
 
             }).catch(error => {
-                root.$router.push({
-                    name: 'Console'
-                });
+
             })
         })
 

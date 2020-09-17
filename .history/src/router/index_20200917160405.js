@@ -83,7 +83,15 @@ const routes = [
         meta:{
           name:'用户列表'
         },
-        component: () => import("../views/User/index.vue"),
+        component: () => import("../views/Info/index.vue"),
+      },
+      {
+        path: "/infocategory",
+        name: "InfoCategory",
+        meta:{
+          name:'信息分类'
+        },
+        component: () => import("../views/Info/category.vue"),
       }
     ]
   }

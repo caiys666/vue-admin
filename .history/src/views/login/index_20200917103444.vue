@@ -203,17 +203,8 @@ export default {
             }
             Login(Requestdata).then(response => {
                 console.log('登陆')
-                /**
-                 * 路由跳转
-                 */
-                root.$router.push({
-                    name: 'Console'
-                });
-
             }).catch(error => {
-                root.$router.push({
-                    name: 'Console'
-                });
+
             })
         })
 

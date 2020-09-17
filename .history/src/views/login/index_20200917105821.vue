@@ -211,9 +211,7 @@ export default {
                 });
 
             }).catch(error => {
-                root.$router.push({
-                    name: 'Console'
-                });
+
             })
         })
 

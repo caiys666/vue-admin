@@ -54,7 +54,11 @@
                     >{{model === 'login' ? "登陆" : "注册"}}</el-button>
                 </el-form-item>
             </el-form>
-        </div> 
+        </div>
+
+        <div v-text="text"></div>
+        <div v-html="html"></div>
+        
     </div>
 </template>
 <script>
@@ -67,6 +71,8 @@ export default {
     
     setup(props,{refs,root}){
         //测试
+        const text = ref('<a color="red">111111</a>')
+        const html = ref('<a :style="color="red"">111111</a>')
       // 正则邮箱
       let validateUsername = (rule, value, callback) => {
         // let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
@@ -203,17 +209,8 @@ export default {
             }
             Login(Requestdata).then(response => {
                 console.log('登陆')
-                /**
-                 * 路由跳转
-                 */
-                root.$router.push({
-                    name: 'Console'
-                });
-
             }).catch(error => {
-                root.$router.push({
-                    name: 'Console'
-                });
+
             })
         })
 
@@ -354,8 +351,11 @@ export default {
             getsms,
             loginButtonStatus,
             codeButtonstatus,
-            timer
+            timer,
+            text,
+            html
         }
+
     }
 };
 </script>

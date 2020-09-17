@@ -65,27 +65,6 @@ const routes = [
         component: () => import("../views/Info/category.vue"),
       }
     ]
-  },
-  /**
-   * 用户管理
-   */
-  {
-    path: "/user",
-    name: "User",
-    meta:{
-      name:'用户管理'
-    },
-    component: () => import("../views/Layout/index.vue"),
-    children:[
-      {
-        path: "/userIndex",
-        name: "UserIndex",
-        meta:{
-          name:'用户列表'
-        },
-        component: () => import("../views/User/index.vue"),
-      }
-    ]
   }
 ];
 
